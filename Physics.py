@@ -1,6 +1,6 @@
 from Player import *
-from Static_Object import *
-from Constants import MAX_GRAVITY,GRAVITY,COLLISION_OFFSET
+from Static_Objects import *
+from Constants import MAX_GRAVITY,GRAVITY,COLLISION_OFFSET,TYPE_RECT,TYPE_TRIANGLE
 class Physics:
     def __init__(self):
         pass
@@ -22,8 +22,8 @@ class Physics:
                         player.rect.top = object.rect.bottom
                     player.vel.y = 0   
                 else:
-                    if player.vel.x > 0:
+                    if player.vel.x > 0 and player.rect.x < object.rect.left:
                         player.rect.right = object.rect.left - COLLISION_OFFSET 
-                    if player.vel.x < 0:
+                    if player.vel.x < 0 and player.rect.x > object.rect.right:
                         player.rect.left = object.rect.right + COLLISION_OFFSET
                     player.vel.x = 0
