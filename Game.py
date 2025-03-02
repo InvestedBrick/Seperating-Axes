@@ -35,5 +35,6 @@ class Game:
 
     def insert_moving_object(self,object):
         self.moving_objects.append(object)
+
     def insert_static_object(self,object):
         self.static_objects.append(object)
