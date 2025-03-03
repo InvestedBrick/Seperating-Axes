@@ -47,11 +47,12 @@ class Physics:
                 continue
 
             closest_point = self.get_closest_point(player, object)
-            direction = vec2(player.rect.x,player.rect.y) - closest_point
+            direction = vec2(player.rect.center) - closest_point
             
+            print(smallest)
             if smallest.dot(direction) < 0:
                 smallest = -smallest
-
+            print(f"Smallest again: {smallest}")
             if abs(smallest.x) > abs(total.x):
                 total.x = smallest.x
             if abs(smallest.y) > abs(total.y):
@@ -68,7 +69,7 @@ class Physics:
         closest_dist = float('inf')
 
         for point in object.vertices:
-            dist = vec2(vec2(player.rect.x,player.rect.y) - point).magnitude()
+            dist = vec2(vec2(player.rect.center) - point).magnitude()
             if dist < closest_dist:
                 closest_dist = dist
                 closest_point = point
