@@ -49,10 +49,8 @@ class Physics:
             closest_point = self.get_closest_point(player, object)
             direction = vec2(player.rect.center) - closest_point
             
-            print(smallest)
             if smallest.dot(direction) < 0:
                 smallest = -smallest
-            print(f"Smallest again: {smallest}")
             if abs(smallest.x) > abs(total.x):
                 total.x = smallest.x
             if abs(smallest.y) > abs(total.y):
