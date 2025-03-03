@@ -8,7 +8,6 @@ class Player:
         self.color = color
         self.vel = vec2(0,0)
         self.gravity = True
-        #self.on_ground = False
         self.normals = []
         self.calculate_normals()
 
@@ -26,6 +25,7 @@ class Player:
         
     def set_ground(self,on_ground):
         self.on_ground = on_ground
+
     def move(self):
         self.rect.move_ip(self.vel)
         self.update_vertices()
