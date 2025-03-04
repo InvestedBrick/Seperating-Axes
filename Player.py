@@ -4,6 +4,7 @@ from Constants import MOVEMENT_SPEED
 class Player:
     def __init__(self,rect: pygame.Rect,color : tuple):
         self.rect = rect
+        self.center = rect.center
         self.update_vertices()
         self.color = color
         self.vel = vec2(0,0)
