@@ -19,7 +19,7 @@ class Physics:
             for obj in objects:
                 # dont collide with yourself
                 if obj == dynamic_object:
-                    break
+                    continue
                 mtv = self.get_collision_mtv(dynamic_object, obj)
                 if mtv is not None:
                     dynamic_object.vel += mtv / 2
