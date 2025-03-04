@@ -1,7 +1,7 @@
 from Player import *
 from Static_Objects import *
 from Constants import MAX_GRAVITY, GRAVITY
-
+from Dynamic_Objects import Dynamic_Convex_Polygon
 class Physics:
     def __init__(self):
         pass
@@ -10,26 +10,29 @@ class Physics:
         if obj.gravity and obj.vel.y < MAX_GRAVITY:
             obj.vel.y += GRAVITY
 
-    def handle_collisions(self, player: Player, static_objects: list[Static_Object]):
+    def handle_collisions(self, dynamic_object:   Dynamic_Convex_Polygon, objects: list[Static_Object]):
         max_iterations = 2  # Prevents potential infinite loops
         iteration = 0
-        player.set_ground(False)    
+        dynamic_object.set_ground(False)    
         while iteration < max_iterations:
             collision_found = False
-            for obj in static_objects:
-                mtv = self.get_collision_mtv(player, obj)
+            for obj in objects:
+                # dont collide with yourself
+                if obj == dynamic_object:
+                    break
+                mtv = self.get_collision_mtv(dynamic_object, obj)
                 if mtv is not None:
-                    player.vel += mtv
+                    dynamic_object.vel += mtv / 2
                     collision_found = True
             if not collision_found:
                 break  
             iteration += 1
         
-        if player.vel.y < 0:
-            player.vel.y = -1
-            player.set_ground(True)
+        if dynamic_object.vel.y < 0:
+            dynamic_object.vel.y = -1
+            dynamic_object.set_ground(True)
     
-    def get_collision_mtv(self, player, static_object):
+    def get_collision_mtv(self, player : Dynamic_Convex_Polygon, static_object : Static_Convex_Polygon):
         """
         Computes the Minimum Translation Vector (MTV) that would resolve the collision
         between player and static_object using the Separating Axis Theorem.
@@ -56,17 +59,17 @@ class Physics:
             return None
         
         closest_point = self.get_closest_point(player, static_object)
-        direction = vec2(player.rect.center) - closest_point
+        direction = vec2(player.center) - closest_point
         if mtv_axis.dot(direction) < 0:
             mtv_axis = -mtv_axis
         
         return mtv_axis * mtv_overlap
 
-    def get_closest_point(self, player, static_object):
+    def get_closest_point(self, player, static_object: Static_Convex_Polygon):
         closest_point = vec2(0, 0)
         closest_dist = float('inf')
         for point in static_object.vertices:
-            dist = (vec2(player.rect.center) - point).magnitude()
+            dist = (vec2(player.center) - point).magnitude()
             if dist < closest_dist:
                 closest_dist = dist
                 closest_point = point
