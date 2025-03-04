@@ -1,11 +1,11 @@
 import pygame
 from Constants import SCREEN_WIDTH,SCREEN_HEIGHT
-from Physics import *
+from Physics import Physics
 class Game:
     def __init__(self):
         self.screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT))
         self.static_objects = []
-        self.moving_objects = []
+        self.dynamic_objects = []
         self.is_running = True
         self.physics = Physics()
     
@@ -15,13 +15,13 @@ class Game:
             #Render
             for object in self.static_objects:
                 object.render(self.screen)
-            for object in self.moving_objects:
+            for object in self.dynamic_objects:
                 object.render(self.screen)
 
-            for object in self.moving_objects:
+            for object in self.dynamic_objects:
                 object.update()
                 self.physics.apply_gravity(object)
-                self.physics.handle_collisions(object,self.static_objects)
+                self.physics.handle_collisions(object,self.static_objects + self.dynamic_objects)
                 object.move()
 
             
@@ -33,8 +33,8 @@ class Game:
 
         pygame.quit()       
 
-    def insert_moving_object(self,object):
-        self.moving_objects.append(object)
+    def insert_dynamic_object(self,object):
+        self.dynamic_objects.append(object)
 
     def insert_static_object(self,object):
         self.static_objects.append(object)
