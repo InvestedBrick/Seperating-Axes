@@ -13,6 +13,7 @@ class Physics:
     def handle_collisions(self, dynamic_object:   Dynamic_Convex_Polygon, objects: list[Static_Object]):
         max_iterations = 2  # Prevents potential infinite loops
         iteration = 0
+        downwards_collision = False
         dynamic_object.set_ground(False)    
         while iteration < max_iterations:
             collision_found = False
@@ -22,13 +23,15 @@ class Physics:
                     continue
                 mtv = self.get_collision_mtv(dynamic_object, obj)
                 if mtv is not None:
+                    if mtv.y < 0:
+                        downwards_collision = True
                     dynamic_object.vel += mtv / 2
                     collision_found = True
             if not collision_found:
                 break  
             iteration += 1
         
-        if dynamic_object.vel.y < 0:
+        if dynamic_object.vel.y < 0 and downwards_collision:
             dynamic_object.vel.y = -1
             dynamic_object.set_ground(True)
     
