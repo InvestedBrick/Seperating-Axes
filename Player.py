@@ -10,6 +10,7 @@ class Player:
         self.vel = vec2(0,0)
         self.gravity = True
         self.normals = []
+        self.jump_strength = 12
         self.calculate_normals()
 
     def render(self,screen):
@@ -23,6 +24,10 @@ class Player:
             self.vel.x = MOVEMENT_SPEED
         else:
             self.vel.x = 0
+
+        if key[pygame.K_SPACE] and self.on_ground:
+            self.on_ground = False
+            self.vel.y = -self.jump_strength
         
     def set_ground(self,on_ground):
         self.on_ground = on_ground
