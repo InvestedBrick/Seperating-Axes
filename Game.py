@@ -30,7 +30,8 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.is_running = False
             pygame.display.update()
-
+            pygame.time.Clock().tick(60)
+            
         pygame.quit()       
 
     def insert_dynamic_object(self,object):
