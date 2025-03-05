@@ -1,9 +1,11 @@
 import pygame
 from pygame import Vector2 as vec2
-from Constants import MAX_OBJ_ACC
+from Constants import MAX_OBJ_ACC,SCREEN_WIDTH
 from math import cos,sin
 class Dynamic_Convex_Polygon:
     def __init__(self,vertices: list[list],color: tuple,center : tuple):
+        self.origin = center
+        self.original_vertices = vertices
         self.color = color
         self.gravity = True
         self.normals = []
@@ -36,10 +38,13 @@ class Dynamic_Convex_Polygon:
         self.on_ground = on_ground
 
     def move(self):
+        if self.center[0] > SCREEN_WIDTH or self.center[0] < 0:
+            self.reset()
         self.center += self.vel
         self.rotate_vertices()
         self.vertices = [[x + self.vel.x,y + self.vel.y] for x,y in self.vertices]
         self.calculate_normals()
+
 
     def rotate_vertices(self):
         angle = self.vel.x / 20
@@ -60,4 +65,8 @@ class Dynamic_Convex_Polygon:
 
         self.vertices = new_vertices
 
+    def reset(self):
+        self.center = self.origin
+        self.vel = vec2(0,0)
+        self.vertices = self.original_vertices
     
