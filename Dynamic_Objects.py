@@ -1,7 +1,7 @@
 import pygame
 from pygame import Vector2 as vec2
 from Constants import MAX_OBJ_ACC
-from math import pi,cos,sin
+from math import cos,sin
 class Dynamic_Convex_Polygon:
     def __init__(self,vertices: list[list],color: tuple,center : tuple):
         self.color = color
@@ -16,6 +16,7 @@ class Dynamic_Convex_Polygon:
         pygame.draw.polygon(screen,self.color,self.vertices)
 
     def calculate_normals(self):
+        self.normals.clear()
         edges = []
         for i in range(len(self.vertices)):
             if i + 1 == len(self.vertices):
@@ -41,7 +42,7 @@ class Dynamic_Convex_Polygon:
         self.calculate_normals()
 
     def rotate_vertices(self):
-        angle = self.vel.x / 10
+        angle = self.vel.x / 20
         cos_angle = cos(angle)
         sin_angle = sin(angle)
 
